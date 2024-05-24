@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88154CE92C01449F00B360AE /* APISessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88154CE82C01449F00B360AE /* APISessionTests.swift */; };
+		88154CEC2C01452100B360AE /* RecipeEndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88154CEB2C01452100B360AE /* RecipeEndpointTests.swift */; };
+		88154CEF2C01457300B360AE /* RecipeListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88154CEE2C01457300B360AE /* RecipeListViewModelTests.swift */; };
+		88154CF12C01460800B360AE /* RecipeListViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88154CF02C01460800B360AE /* RecipeListViewTests.swift */; };
 		883F2AF62BF51C24000038AC /* recetasYapeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883F2AF52BF51C24000038AC /* recetasYapeApp.swift */; };
 		883F2AFA2BF51C27000038AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 883F2AF92BF51C27000038AC /* Assets.xcassets */; };
 		883F2AFD2BF51C27000038AC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 883F2AFC2BF51C27000038AC /* Preview Assets.xcassets */; };
@@ -50,6 +54,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		88154CE82C01449F00B360AE /* APISessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISessionTests.swift; sourceTree = "<group>"; };
+		88154CEB2C01452100B360AE /* RecipeEndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeEndpointTests.swift; sourceTree = "<group>"; };
+		88154CEE2C01457300B360AE /* RecipeListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListViewModelTests.swift; sourceTree = "<group>"; };
+		88154CF02C01460800B360AE /* RecipeListViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListViewTests.swift; sourceTree = "<group>"; };
 		883F2AF22BF51C24000038AC /* recetasYape.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = recetasYape.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		883F2AF52BF51C24000038AC /* recetasYapeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recetasYapeApp.swift; sourceTree = "<group>"; };
 		883F2AF92BF51C27000038AC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -103,6 +111,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		88154CE72C01449100B360AE /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				88154CE82C01449F00B360AE /* APISessionTests.swift */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
+		88154CEA2C01451500B360AE /* RecipesApi */ = {
+			isa = PBXGroup;
+			children = (
+				88154CEB2C01452100B360AE /* RecipeEndpointTests.swift */,
+			);
+			path = RecipesApi;
+			sourceTree = "<group>";
+		};
+		88154CED2C01455C00B360AE /* RecipeList */ = {
+			isa = PBXGroup;
+			children = (
+				88154CEE2C01457300B360AE /* RecipeListViewModelTests.swift */,
+				88154CF02C01460800B360AE /* RecipeListViewTests.swift */,
+			);
+			path = RecipeList;
+			sourceTree = "<group>";
+		};
 		883F2AE92BF51C24000038AC = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +183,9 @@
 		883F2B0A2BF51C27000038AC /* recetasYapeTests */ = {
 			isa = PBXGroup;
 			children = (
+				88154CED2C01455C00B360AE /* RecipeList */,
+				88154CEA2C01451500B360AE /* RecipesApi */,
+				88154CE72C01449100B360AE /* Api */,
 				883F2B0B2BF51C27000038AC /* recetasYapeTests.swift */,
 			);
 			path = recetasYapeTests;
@@ -434,7 +470,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88154CF12C01460800B360AE /* RecipeListViewTests.swift in Sources */,
+				88154CEF2C01457300B360AE /* RecipeListViewModelTests.swift in Sources */,
+				88154CEC2C01452100B360AE /* RecipeEndpointTests.swift in Sources */,
 				883F2B0C2BF51C27000038AC /* recetasYapeTests.swift in Sources */,
+				88154CE92C01449F00B360AE /* APISessionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
