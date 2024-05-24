@@ -8,18 +8,19 @@
 import SwiftUI
 
 struct RecipeListView: View {
-    @ObservedObject private var viewModel = RecipeListViewModel()
+    @StateObject var viewModel = RecipeListViewModel()
 
     var body: some View {
         NavigationView {
             List {
                 ForEach(self.viewModel.storedRecipes, id: \.id) { recipe in
+//                    Text(recipe.nombre ?? "No llegó nada")
                     NavigationLink(destination: DetailViewView(recipe: recipe)) {
                         RecipeRow(recipe: recipe)
                     }
                 }
             }
-            .navigationBarTitle("Recetas")
+            .navigationBarTitle("Recetas aquí")
             .onAppear {
                 self.viewModel.fetchRecipes()
             }
@@ -42,9 +43,9 @@ struct RecipeRow: View {
             VStack(alignment: .leading) {
                 Text(recipe.nombre ?? "")
                     .font(.headline)
-                Text(recipe.descripcion ?? "")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
+//                Text(recipe.descripcion ?? "")
+//                    .font(.subheadline)
+//                    .foregroundColor(.gray)
             }
             .padding(.leading, 8)
             

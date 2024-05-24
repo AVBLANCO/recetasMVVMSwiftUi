@@ -17,28 +17,7 @@ struct DatabaseManager {
     
     private init() {
     }
-    
-    // Store all recipe items fetched from network
-    //    func addRecipeListItems(_ items: [RecipeListModel]) {
-    //    func addRecipeListItems(_ items: [Recipe]) {
-    //        // Clear all item before storing new
-    //        deleteAllRecipeItems()
-    //
-    //        let _:[RecipeEntity] = items.compactMap { (recipe) -> RecipeEntity in
-    //            let recipeitem = RecipeEntity(context: self.viewContext)
-    ////            recipeitem.id    = Int32(Int(recipe.id ?? 0))
-    //            recipeItem.id = UUID()
-    //            recipeitem.nombre      = recipe.nombre
-    //            recipeitem.descripcion    = recipe.descripcion
-    //            recipeitem.imagenReceta  = recipe.imagen
-    //            recipeitem.latitudReceta  = recipe.latitudImagen
-    //            recipeitem.longitudReceta  = recipe.longitudImagen
-    //
-    //            return recipeitem
-    //        }
-    //
-    //        saveContext()
-    //    }
+
     
     func addRecipeListItems(_ items: [Recipe]) {
         // Clear all item before storing new
@@ -56,29 +35,7 @@ struct DatabaseManager {
         
         saveContext()
     }
-    
-    // Ejemplo de Conversión de UUID basado en Int (No recomendado para IDs)
-    
-//    func addRecipeListItems(_ items: [Recipe]) {
-//        deleteAllRecipeItems()
-//        
-//        items.forEach { recipe in
-//            let recipeItem = RecipeEntity(context: self.viewContext)
-//            if let id = recipe.id {
-//                recipeItem.id = UUID(uuidString: String(format: "%08X-%04X-%04X-%04X-%012X", id, 0, 0, 0, 0)) ?? UUID()
-//            } else {
-//                recipeItem.id = UUID()
-//            }
-//            recipeItem.nombre = recipe.nombre
-//            recipeItem.descripcion = recipe.descripcion
-//            recipeItem.imagenReceta = recipe.imagen
-//            recipeItem.latitudReceta = recipe.latitudImagen
-//            recipeItem.longitudReceta = recipe.longitudImagen
-//        }
-//        
-//        saveContext()
-//    }
-    
+
     
     // Fetch all stored recipe items
     func fetchAllRecipeItems()->[RecipeEntity] {

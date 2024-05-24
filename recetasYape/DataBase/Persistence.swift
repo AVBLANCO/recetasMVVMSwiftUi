@@ -13,6 +13,21 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
+        for _ in 0..<10 {
+            let newItem = RecipeEntity(context: viewContext)
+            newItem.id = UUID()
+            newItem.nombre = "Receta de Ejemplo"
+            newItem.descripcion = "Descripción de ejemplo"
+            newItem.imagenReceta = "https://example.com/image.jpg"
+            newItem.latitudReceta = "0.0"
+            newItem.longitudReceta = "0.0"
+        }
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
         return result
     }()
 

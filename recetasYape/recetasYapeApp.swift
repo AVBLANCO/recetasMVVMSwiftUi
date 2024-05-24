@@ -18,11 +18,11 @@ struct recetasYapeApp: App {
         .onChange(of: scenePhase) { phase in
             switch phase {
             case .active:
-                print("active")
+                debugPrint("active")
             case .inactive:
-                print("inactive")
+                debugPrint("inactive")
             case .background:
-                print("background")
+                debugPrint("background")
                 DatabaseManager.shared.saveContext()
             @unknown default:
                 fatalError()
@@ -30,3 +30,5 @@ struct recetasYapeApp: App {
         }
     }
 }
+
+

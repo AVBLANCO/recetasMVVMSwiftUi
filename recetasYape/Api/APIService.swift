@@ -10,6 +10,5 @@ import Combine
 import UIKit
 
 protocol APIService {
-    func request<T: Decodable>(with builder: RequestBuilder) -> AnyPublisher<T, APIError>
-//    func requestImage(with url: String) -> AnyPublisher<UIImage, APIError>
+    func request<T: Decodable>(with endpoint: RecipeEndpoint) -> AnyPublisher<T, APIError>
 }

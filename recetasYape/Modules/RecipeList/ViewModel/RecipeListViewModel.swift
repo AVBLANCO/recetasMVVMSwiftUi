@@ -9,45 +9,68 @@ import Foundation
 import CoreData
 import Combine
 
-
 class RecipeListViewModel: ObservableObject, RecipeApiService {
-    var apiService: APIService
-    
-    var apiSession: APIService {
-        return apiService
-    }
-    
+    internal var apiSession: APIService
     private var cancellables = Set<AnyCancellable>()
-    
+
     @Published var showAlert = false
     @Published var storedRecipes: [RecipeEntity] = []
     var alertMessage = "Unknown error"
-    
-    init(apiService: APIService = APISession()) {
-        self.apiService = apiService
-    }
-    
-    func fetchRecipes() {
+
+    private let viewContext: NSManagedObjectContext
+
+    init(apiSession: APIService = APISession(),
+         context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
+        self.apiSession = apiSession
+        self.viewContext = context
         self.fetchRecipes()
-            .sink(receiveCompletion: { [weak self] (result: Subscribers.Completion<APIError>) in
+    }
+
+    func fetchRecipes() {
+        let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
+        do {
+            self.storedRecipes = try viewContext.fetch(fetchRequest)
+            if self.storedRecipes.isEmpty {
+                fetchRecipesFromAPI()
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.alertMessage = "Error fetching recipes: \(error.localizedDescription)"
+                self.showAlert = true
+            }
+        }
+    }
+
+    // En tu ViewModel, usa la instancia de APISession para realizar la solicitud
+    private func fetchRecipesFromAPI() {
+        let cancellable = apiSession.request(with: RecipeEndpoint.recipeList)
+            .sink(receiveCompletion: { [weak self] result in
                 switch result {
                 case .failure(let error):
-                    self?.alertMessage = error.localizedDescription
-                    self?.showAlert = true
+                    DispatchQueue.main.async {
+                        var errorMessage = "Unknown error"
+                        if case .apiError(let reason) = error {
+                            errorMessage = reason
+                        }
+                        self?.alertMessage = errorMessage
+                        self?.showAlert = true
+                    }
                 case .finished:
                     break
                 }
             }, receiveValue: { [weak self] (recipes: [Recipe]) in
-                self?.saveRecipesToCoreData(recipes)
-                self?.storedRecipes = self?.fetchRecipesFromCoreData() ?? []
+                DispatchQueue.main.async {
+                    self?.saveRecipesToCoreData(recipes)
+                    self?.fetchRecipesFromCoreData()
+                }
             })
-            .store(in: &cancellables)
+        cancellables.insert(cancellable)
     }
-    
+
+
     private func saveRecipesToCoreData(_ recipes: [Recipe]) {
-        let context = PersistenceController.shared.container.viewContext
         recipes.forEach { recipe in
-            let recipeEntity = RecipeEntity(context: context)
+            let recipeEntity = RecipeEntity(context: viewContext)
             recipeEntity.id = UUID() // Or map correctly
             recipeEntity.nombre = recipe.nombre
             recipeEntity.descripcion = recipe.descripcion
@@ -56,20 +79,26 @@ class RecipeListViewModel: ObservableObject, RecipeApiService {
             recipeEntity.longitudReceta = recipe.longitudImagen
         }
         do {
-            try context.save()
+            try viewContext.save()
         } catch {
-            print("Error saving recipes: \(error)")
+            debugPrint("Error saving recipes: \(error)")
         }
     }
-    
-    private func fetchRecipesFromCoreData() -> [RecipeEntity] {
-        let context = PersistenceController.shared.container.viewContext
+
+    private func fetchRecipesFromCoreData() {
         let request = NSFetchRequest<RecipeEntity>(entityName: "RecipeEntity")
         do {
-            return try context.fetch(request)
+            DispatchQueue.main.async {
+                do {
+                    self.storedRecipes = try self.viewContext.fetch(request) // Usa self.viewContext y self.storedRecipes
+                } catch {
+                    debugPrint("Error fetching recipes: \(error)")
+                }
+            }
         } catch {
-            print("Error fetching recipes: \(error)")
-            return []
+            debugPrint("Error creating fetch request: \(error)")
         }
     }
+
+
 }

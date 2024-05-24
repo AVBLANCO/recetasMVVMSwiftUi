@@ -9,20 +9,24 @@ import Foundation
 import Combine
 import UIKit
 
-
-
-class APISession: APIService {
-    func request<T>(with builder: RequestBuilder) -> AnyPublisher<T, APIError> where T : Decodable {
-        return URLSession.shared.dataTaskPublisher(for: builder.urlRequest)
-            .tryMap { result -> Data in
-                guard let response = result.response as? HTTPURLResponse, response.statusCode == 200 else {
-                    throw APIError.responseUnsuccessful
+struct APISession: APIService {
+    func request<T: Decodable>(with endpoint: RecipeEndpoint) -> AnyPublisher<T, APIError> {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        
+        return URLSession.shared
+            .dataTaskPublisher(for: endpoint.urlRequest)
+            .mapError { _ in .unknown }
+            .flatMap { data, response -> AnyPublisher<T, APIError> in
+                if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+                    return Fail(error: .apiError(reason: "Invalid response code: \(httpResponse.statusCode)")).eraseToAnyPublisher()
                 }
-                return result.data
-            }
-            .decode(type: T.self, decoder: JSONDecoder())
-            .mapError { error in
-                return APIError.map(error)
+                return Just(data)
+                    .decode(type: T.self, decoder: decoder)
+                    .mapError { error in
+                        .parsingError(reason: error.localizedDescription)
+                    }
+                    .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }

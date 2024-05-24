@@ -9,37 +9,12 @@ import SwiftUI
 import CoreData
 
 
-struct ContentView: App {
-//    @Environment(\.managedObjectContext) private var viewContext
-   
-    @Environment(\.scenePhase) private var scenePhase
-    
-    var body: some Scene {
-        WindowGroup {
-//            RecipeListView(viewModel: RecipeListViewModel)
-            RecipeListView()
-        }
-        .onChange(of: scenePhase) { phase in
-            switch phase {
-            case .active:
-                
-                print("active")
-            case .inactive:
-                print("inactive")
-            case .background:
-                print("background")
-                DatabaseManager.shared.saveContext()
-            @unknown default:
-                fatalError()
-            }
-        }
+struct ContentView: View {
+    // Creamos una instancia de RecipeListViewModel
+    @StateObject private var viewModel = RecipeListViewModel()
+
+    var body: some View {
+        // Pasamos la instancia de viewModel al inicializar RecipeListView
+        RecipeListView(viewModel: viewModel)
     }
-    
-    
 }
-
-
-
-//#Preview {
-//    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-//}

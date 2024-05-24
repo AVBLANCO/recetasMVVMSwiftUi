@@ -9,11 +9,21 @@ import Foundation
 
 
 enum APIError: LocalizedError {
-    case responseUnsuccessful
-    case decodingFailure
-    case custom(description: String)
-
-    static func map(_ error: Error) -> APIError {
-        return (error as? APIError) ?? .custom(description: error.localizedDescription)
+    case unknown
+    case apiError(reason: String)
+    case parsingError(reason: String)
+    case networkError(reason: String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .unknown:
+            return "Unknown error"
+        case .apiError(let reason):
+            return reason
+        case .parsingError(let reason):
+            return reason
+        case .networkError(let reason):
+            return reason
+        }
     }
 }
